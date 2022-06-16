@@ -1,0 +1,26 @@
+<Project>
+  <PropertyGroup>
+    <Authors>New Relic, Inc.</Authors>
+    <Product>CodeStream</Product>
+    <Copyright>Copyright 2022</Copyright>
+    <AssemblyVersion>13.1.2.0</AssemblyVersion>
+    <FileVersion>13.1.2.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	<OutputPath>bin\x86\Debug\</OutputPath>
+	<PlatformTarget>x86</PlatformTarget>
+	<DefineConstants>DEBUG;TRACE;X86</DefineConstants>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<NoWarn />
+	<WarningsAsErrors />
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Nerdbank.Streams" Version="2.6.81" />
+	<PackageReference Include="Serilog" Version="2.5.0" />
+	<PackageReference Include="StreamJsonRpc" Version="2.7.70" />
+	<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+</Project>

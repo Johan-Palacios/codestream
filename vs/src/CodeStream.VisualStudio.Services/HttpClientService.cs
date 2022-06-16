@@ -1,6 +1,3 @@
-using CodeStream.VisualStudio.Core.Services;
-using Newtonsoft.Json;
-using Serilog;
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
@@ -9,10 +6,13 @@ using System.Net.Http;
 using CodeStream.VisualStudio.Core.Exceptions;
 using CodeStream.VisualStudio.Core.Logging;
 using CodeStream.VisualStudio.Core.Models;
+using CodeStream.VisualStudio.Core.Services;
 using CodeStream.VisualStudio.Framework.Interfaces;
 using CodeStream.VisualStudio.Framework.Models;
+using Newtonsoft.Json;
+using Serilog;
 
-namespace CodeStream.VisualStudio.Services {
+namespace CodeStream.VisualStudio.Services2 {
 
 	[Export(typeof(IHttpClientService))]
 	[PartCreationPolicy(CreationPolicy.Shared)]

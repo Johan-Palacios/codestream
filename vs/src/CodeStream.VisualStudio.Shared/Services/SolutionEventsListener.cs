@@ -108,6 +108,7 @@ namespace CodeStream.VisualStudio.Services {
 		}
 
 		int IVsSolutionEvents.OnAfterOpenSolution(object pUnkReserved, int fNewSolution) {
+			ThreadHelper.ThrowIfNotOnUIThread();
 			OnSolutionOpened();
 			return 0;
 		}
@@ -204,6 +205,7 @@ namespace CodeStream.VisualStudio.Services {
 		}
 
 		public void OnAfterOpenFolder(string folderPath) {
+			ThreadHelper.ThrowIfNotOnUIThread();
 			OnFolderOpened(folderPath);
 			OnSolutionLoadComplete();
 		}

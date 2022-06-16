@@ -768,7 +768,7 @@
       <Name>CodeStream.VisualStudio.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\CodeStream.VisualStudio.Services\CodeStream.VisualStudio.Services.csproj">
-      <Project>{31bd46b5-c00e-4c79-9f9d-03768dab918d}</Project>
+      <Project>{b06f40c7-a8ef-4bb3-a845-ff6714d1bc83}</Project>
       <Name>CodeStream.VisualStudio.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\CodeStream.VisualStudio.Shell.2019\CodeStream.VisualStudio.Shell.2019.csproj">
