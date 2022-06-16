@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CodeStream.VisualStudio.UnitTests.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,7 +9,7 @@ namespace CodeStream.VisualStudio.UnitTests.Services
     public class CredentialsServiceTests
     {
         [TestMethod]
-        public void AllTest()
+        public async Task AllTestAsync()
         {
             var email = "a@b.com";
             var serverUri = new Uri("http://foo.com");
@@ -16,15 +17,15 @@ namespace CodeStream.VisualStudio.UnitTests.Services
 
             var testCredentialsService = new CredentialsServiceStub();
 
-            var saved = testCredentialsService.SaveAsync(serverUri, email, secret);
-            Assert.IsTrue(saved.Result);
+            var saved = await testCredentialsService.SaveAsync(serverUri, email, secret);
+            Assert.IsTrue(saved);
 
-            var exists = testCredentialsService.LoadAsync(serverUri, email);
-            Assert.IsTrue(exists.Result.Item1 == email);
-            Assert.IsTrue(exists.Result.Item2 == secret);
+            var exists = await testCredentialsService.LoadAsync(serverUri, email);
+            Assert.IsTrue(exists.Item1 == email);
+            Assert.IsTrue(exists.Item2 == secret);
 
-            var deleted = testCredentialsService.DeleteAsync(serverUri, email);
-            Assert.IsTrue(deleted.Result);
+            var deleted = await testCredentialsService.DeleteAsync(serverUri, email);
+            Assert.IsTrue(deleted);
         }
     }
 }

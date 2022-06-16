@@ -244,18 +244,21 @@ namespace CodeStream.VisualStudio.Services {
 		}
 
 		private IVsTextView GetActiveView() {
-			var textManager = _serviceProvider.GetService(typeof(SVsTextManager)) as IVsTextManager;
-			if (textManager == null) return null;
+			if (!(_serviceProvider.GetService(typeof(SVsTextManager)) is IVsTextManager textManager)) {
+				return null;
+			}
 
 			textManager.GetActiveView(1, null, out IVsTextView textView);
 			return textView;
 		}
 
 		public EditorContext GetEditorContext() {
+#pragma warning disable CS0618 // Type or member is obsolete
 			var editorState = GetActiveEditorState(out IVsTextView textView);
+#pragma warning restore CS0618 // Type or member is obsolete
 			var activeTextEditor = GetActiveTextEditor(textView);
 
-			EditorContext editorContext = null;
+			EditorContext editorContext;
 			if (activeTextEditor != null) {
 				try {
 					editorContext = new EditorContext {

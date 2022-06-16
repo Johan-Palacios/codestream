@@ -18,10 +18,12 @@ using Task = System.Threading.Tasks.Task;
 using System.Threading.Tasks;
 using CodeStream.VisualStudio.Framework;
 using CodeStream.VisualStudio.Framework.Enums;
+using CodeStream.VisualStudio.Framework.Extensions;
 using CodeStream.VisualStudio.Framework.Interfaces;
 using CodeStream.VisualStudio.Framework.Models;
 using Constants = CodeStream.VisualStudio.Framework.Constants;
 using Process = System.Diagnostics.Process;
+using Microsoft;
 
 namespace CodeStream.VisualStudio.Services {
 
@@ -49,6 +51,9 @@ namespace CodeStream.VisualStudio.Services {
 			ISettingsServiceFactory settingsServiceFactory,
 			IEventAggregator eventAggregator,
 			[Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider) {
+
+			ThreadHelper.ThrowIfNotOnUIThread();
+
 			_codeStreamAgentService = codeStreamAgentService;
 			_sessionService = sessionService;
 			_settingsServiceFactory = settingsServiceFactory;
@@ -66,6 +71,7 @@ namespace CodeStream.VisualStudio.Services {
 				});
 
 			_vsSolution = serviceProvider.GetService(typeof(SVsSolution)) as IVsSolution;
+			Assumes.Present(_vsSolution);
 		}
 
 		public string GetEditorFormat() {
@@ -102,8 +108,6 @@ namespace CodeStream.VisualStudio.Services {
 		}
 
 		public CodeLevelMetricStatus GetClmStatus() {
-			var settings = _settingsServiceFactory.GetOrCreate(nameof(CodeLevelMetricsCallbackService));
-
 			if (!_sessionService.IsAgentReady || _sessionService.SessionState == SessionState.UserSigningIn) {
 				return CodeLevelMetricStatus.Loading;
 			}

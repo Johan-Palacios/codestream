@@ -27,17 +27,6 @@ namespace CodeStream.VisualStudio.UI {
 		}
 
 		/// <summary>
-		/// Tries to populate the marker collection while ignoring the response
-		/// </summary>
-		/// <param name="forceUpdate">When set to true, ignores if the collection is empty</param>
-		/// <returns></returns>
-		public void TrySetMarkers(bool forceUpdate = false) {
-			_ = System.Threading.Tasks.Task.Run(async delegate {
-				_ = TrySetMarkersAsync(forceUpdate);
-			});
-		}
-
-		/// <summary>
 		/// Asynchronously tries to populate the marker collection, returns true if there was a change in marker count and the callee should update
 		/// </summary>
 		/// <param name="forceUpdate">When set to true, ignores if the collection is empty</param>

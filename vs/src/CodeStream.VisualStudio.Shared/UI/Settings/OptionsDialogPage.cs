@@ -10,21 +10,20 @@ namespace CodeStream.VisualStudio.UI.Settings {
 	public class OptionsDialogPage : Microsoft.VisualStudio.Shell.DialogPage, IOptionsDialogPage {	
 
 		private string _email;
-		private bool _autoHideMarkers = false;
+		private bool _autoHideMarkers;
 		//// not supported yet
 		//private bool _showMarkerCodeLens = false;
 		private bool _showMarkerGlyphs = true;
 		private bool _showAvatars = true;
 		private TraceLevel _traceLevel = TraceLevel.Info;
 		 
-		private string _team;
 		private bool _autoSignIn = true;
 #if DEBUG
 		private string _serverUrl = "https://pd-api.codestream.us";
 #else
         private string _serverUrl = "https://api.codestream.com";
 #endif
-		private bool _disableStrictSsl = false;
+		private bool _disableStrictSsl;
 		private bool _proxyStrictSsl;
 		private string _extraCertificates;
 
@@ -180,19 +179,6 @@ namespace CodeStream.VisualStudio.UI.Settings {
 				}
 			}
 		}
-
-		//[Category("UI")]
-		//[DisplayName("Show Marker CodeLens")]
-		//[Description("Specifies whether to show code lens above lines with associated codemarks in the editor")]
-		//public bool ShowMarkerCodeLens
-		//{
-		//    get => _showMarkerCodeLens;
-		//    set
-		//    {
-		//        _showMarkerCodeLens = value;
-		//        NotifyPropertyChanged();
-		//    }
-		//}
 
 		[Category("UI")]
 		[DisplayName("Show Marker Glyphs")]

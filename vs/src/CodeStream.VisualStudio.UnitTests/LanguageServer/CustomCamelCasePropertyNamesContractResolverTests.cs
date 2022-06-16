@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using CodeStream.VisualStudio.Core.Extensions;
 using CodeStream.VisualStudio.Core.LanguageServer;
 using CodeStream.VisualStudio.Core.Models;
+using CodeStream.VisualStudio.Framework.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

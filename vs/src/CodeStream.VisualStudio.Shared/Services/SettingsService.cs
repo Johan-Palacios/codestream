@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Shell;
 using Serilog;
 using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using CodeStream.VisualStudio.Framework.Extensions;
 using Serilog.Events;
 
@@ -20,10 +21,12 @@ namespace CodeStream.VisualStudio.Services {
 		private volatile ICodeStreamSettingsManager _codeStreamSettingsManager;
 		private static readonly object Locker = new object();
 
+
 		/// <summary>
 		/// DO NOT call this in another constructor -- it is possible that SOptionsDialogPageAccessor has not been registered yet
 		/// </summary>
 		/// <returns></returns>
+		[SuppressMessage("Usage", "VSTHRD108:Assert thread affinity unconditionally", Justification = "<Pending>")]
 		public ICodeStreamSettingsManager GetOrCreate(string source = null) {
 			try {
 				if (_codeStreamSettingsManager == null) {
@@ -34,7 +37,7 @@ namespace CodeStream.VisualStudio.Services {
 								var accessor = Package.GetGlobalService(typeof(SSettingsManagerAccessor)) as
 										ISettingsManagerAccessor;
 								Microsoft.Assumes.Present(accessor);
-								_codeStreamSettingsManager = accessor?.GetSettingsManager();
+								_codeStreamSettingsManager = accessor.GetSettingsManager();
 								return _codeStreamSettingsManager;
 							}
 						}

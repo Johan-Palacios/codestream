@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using CodeStream.VisualStudio.Framework.Extensions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
-using JsonExtensions = CodeStream.VisualStudio.Core.Extensions.JsonExtensions;
 
 namespace CodeStream.VisualStudio.UnitTests.Extensions {
 	[TestClass]

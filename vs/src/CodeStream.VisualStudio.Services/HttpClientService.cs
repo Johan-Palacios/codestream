@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using CodeStream.VisualStudio.Core.Exceptions;
@@ -26,9 +27,11 @@ namespace CodeStream.VisualStudio.Services {
 			_settingsServiceFactory = settingsServiceFactory;
 		}
 
+
 		/// <summary>
 		/// Gets the settings from the API for enabling telemetry in the agent
 		/// </summary>
+		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "<Pending>")]
 		public NREnvironmentSettings GetNREnvironmentSettings() {
 			if (_nrEnvironmentSettings != null) {
 				return _nrEnvironmentSettings;

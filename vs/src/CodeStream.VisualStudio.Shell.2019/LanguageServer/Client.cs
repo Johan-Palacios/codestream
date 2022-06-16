@@ -79,8 +79,8 @@ namespace CodeStream.VisualStudio.Shell._2019.LanguageServer {
 		public object MiddleLayer => MiddleLayer2019Provider.Instance;
 
 		private class MiddleLayer2019Provider : ILanguageClientMiddleLayer {
-			internal readonly static MiddleLayer2019Provider Instance = new MiddleLayer2019Provider();
-			private MiddleLayerProvider _middleLayerProvider;
+			internal static readonly MiddleLayer2019Provider Instance = new MiddleLayer2019Provider();
+			private readonly MiddleLayerProvider _middleLayerProvider;
 			private MiddleLayer2019Provider() {
 				_middleLayerProvider = new MiddleLayerProvider(Log);
 			}
@@ -132,7 +132,7 @@ namespace CodeStream.VisualStudio.Shell._2019.LanguageServer {
 		private async Task StartStopRestartAsync(bool isReload) {
 			try {
 				if (isReload) {
-					isReloading = true;
+					IsReloading = true;
 				}
 				OnStopping();
 				await StopAsync?.InvokeAsync(this, EventArgs.Empty);
@@ -156,7 +156,7 @@ namespace CodeStream.VisualStudio.Shell._2019.LanguageServer {
 			}
 			finally {
 				if (isReload) {
-					isReloading = false;
+					IsReloading = false;
 				}
 			}
 			await Task.CompletedTask;

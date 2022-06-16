@@ -25,7 +25,7 @@ namespace CodeStream.VisualStudio.Core.LanguageServer {
 		protected readonly ILanguageServerClientProcess LanguageServerProcess;
 		protected readonly IHttpClientService HttpClientService;
 
-		protected bool isReloading { get; set; }
+		protected bool IsReloading { get; set; }
 		protected LanguageServerClientBase(
 			IServiceProvider serviceProvider,
 			ISessionService sessionService,
@@ -108,10 +108,7 @@ namespace CodeStream.VisualStudio.Core.LanguageServer {
 				await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 				// Sets the UI context so the custom commands will be available.
-				var monitorSelection =
-					Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(IVsMonitorSelection)) as
-						IVsMonitorSelection;
-				if (monitorSelection != null) {
+				if (Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(IVsMonitorSelection)) is IVsMonitorSelection monitorSelection) {
 					if (monitorSelection.GetCmdUIContextCookie(ref this._uiContextGuid, out uint cookie) ==
 						VSConstants.S_OK) {
 						monitorSelection.SetCmdUIContext(cookie, 1);
@@ -138,12 +135,12 @@ namespace CodeStream.VisualStudio.Core.LanguageServer {
 
 		protected void OnRpcDisconnected(JsonRpcDisconnectedEventArgs e) {
 			try {
-				Log.Debug(e.Exception, $"RPC Disconnected: LastMessage={e.LastMessage} Description={e.Description} Reason={e.Reason} Exception={e.Exception}");
+				Log.Debug(e.Exception, $"RPC Disconnected: Description={e.Description} Reason={e.Reason} Exception={e.Exception}");
 
 				SessionService.SetAgentDisconnected();
 
-				EventAggregator?.Publish(new LanguageServerDisconnectedEvent(e.LastMessage.ToString(), e.Description, e.Reason.ToString(), e.Exception) {
-					IsReloading = isReloading
+				EventAggregator?.Publish(new LanguageServerDisconnectedEvent(e.Description, e.Reason.ToString(), e.Exception) {
+					IsReloading = IsReloading
 				});
 			}
 			catch (Exception ex) {
@@ -151,7 +148,7 @@ namespace CodeStream.VisualStudio.Core.LanguageServer {
 			}
 		}
 
-		protected async System.Threading.Tasks.Task OnServerInitializedBaseAsync(JsonRpc rpc, IComponentModel componentModel) {
+		protected async Task OnServerInitializedBaseAsync(JsonRpc rpc, IComponentModel componentModel) {
 			try {
 				Log.Debug($"{nameof(OnServerInitializedBaseAsync)} starting...");
 

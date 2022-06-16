@@ -10,11 +10,11 @@ namespace CodeStream.VisualStudio.UnitTests {
 	[TestClass]
 	public class WebViewRouterTests {
 		[TestMethod]
-		public async Task HandleAsyncTest() {
+		public async Task HandleAsyncTestAsync() {
 
 			var browserServiceMock = new Mock<IBrowserService>();		 
-
 			var codeStreamAgentServiceMock = new Mock<ICodeStreamAgentService>();
+
 			var router = new WebViewRouter(
 				null,
 				new Mock<ICodeStreamService>().Object,
@@ -31,14 +31,13 @@ namespace CodeStream.VisualStudio.UnitTests {
 
 			await router.HandleAsync(new WindowEventArgs("BOGUS"));
 
-			string message;
-			message =
-				new WebviewIpcMessage(
-					"123",
-					ReloadWebviewRequestType.MethodName,
-					JToken.Parse("{}"),
-					null).AsJson();
+			var message = new WebviewIpcMessage(
+				"123",
+				ReloadWebviewRequestType.MethodName,
+				JToken.Parse("{}"),
+				null).AsJson();
 			await router.HandleAsync(new WindowEventArgs(message));
+
 			browserServiceMock.Verify(_ => _.ReloadWebView(), Times.Once);
 
 			 message =
@@ -48,6 +47,7 @@ namespace CodeStream.VisualStudio.UnitTests {
 					JToken.Parse("{}"),
 					null).AsJson();
 			await router.HandleAsync(new WindowEventArgs(message));
+
 			codeStreamAgentServiceMock.Verify(_ => _.SendAsync<JToken>(It.IsAny<string>(), It.IsAny<JToken>(), null), Times.Once);
 		}
 	}

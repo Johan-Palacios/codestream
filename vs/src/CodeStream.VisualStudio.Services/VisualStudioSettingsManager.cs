@@ -7,6 +7,7 @@ using CodeStream.VisualStudio.Framework.Enums;
 using CodeStream.VisualStudio.Framework.Exceptions;
 using CodeStream.VisualStudio.Framework.Extensions;
 using CodeStream.VisualStudio.Framework.Interfaces;
+using Microsoft;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
 
@@ -26,6 +27,7 @@ namespace CodeStream.VisualStudio.Services {
 		[ImportingConstructor]
 		public VisualStudioSettingsManager([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider) {
 			_roamingSettingsManager = serviceProvider.GetService(typeof(SVsSettingsPersistenceManager)) as ISettingsManager;
+			Assumes.Present(_roamingSettingsManager);
 		}
 
 		private T GetSetting<T>(VisualStudioSetting setting) {

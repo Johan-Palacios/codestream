@@ -95,8 +95,7 @@ namespace CodeStream.VisualStudio.UI {
 				using (var metrics = Log.WithMetrics($"{logPrefix} ")) {
 					if (wpfTextView == null || !wpfTextView.HasValidDocumentRoles()) return;
 
-					IVirtualTextDocument virtualTextDocument = null;
-					if (!TextDocumentExtensions.TryGetTextDocument(TextDocumentFactoryService, wpfTextView, out virtualTextDocument)) {
+					if (!TextDocumentFactoryService.TryGetTextDocument(wpfTextView, out var virtualTextDocument)) {
 						Log.Warning($"{logPrefix} Could not create virtualTextDocument");
 						return;
 					}
@@ -509,9 +508,13 @@ namespace CodeStream.VisualStudio.UI {
 		#region EventHandlers
 
 		private void Caret_PositionChanged(object sender, CaretPositionChangedEventArgs e) {
-			if (e.TextView == null || !SessionService.IsReady) return;
-			var wpfTextView = e.TextView as IWpfTextView;
-			if (wpfTextView == null) return;
+			if (e.TextView == null || !SessionService.IsReady) {
+				return;
+			}
+
+			if (!(e.TextView is IWpfTextView wpfTextView)) {
+				return;
+			}
 
 			wpfTextView
 				.Properties
@@ -520,10 +523,13 @@ namespace CodeStream.VisualStudio.UI {
 		}
 
 		private void Selection_SelectionChanged(object sender, EventArgs e) {
-			if (!SessionService.IsReady) return;
+			if (!SessionService.IsReady) {
+				return;
+			}
 
-			var textSelection = sender as ITextSelection;
-			if (textSelection == null || textSelection.IsEmpty) return;
+			if (!(sender is ITextSelection textSelection) || textSelection.IsEmpty) {
+				return;
+			}
 
 			var wpfTextView = textSelection.TextView as IWpfTextView;
 
@@ -607,7 +613,7 @@ namespace CodeStream.VisualStudio.UI {
 
 					if (wpfTextView.Properties.TryGetProperty(PropertyNames.TextViewDocument, out IVirtualTextDocument virtualTextDocument) &&
 						virtualTextDocument != null) {
-						_ = CodeStreamService.EditorSelectionChangedNotificationAsync(
+						await CodeStreamService.EditorSelectionChangedNotificationAsync(
 							virtualTextDocument.Uri,
 							activeEditorState,
 							wpfTextView.ToVisibleRangesSafe(),
@@ -634,7 +640,7 @@ namespace CodeStream.VisualStudio.UI {
 					Debug.WriteLine($"{nameof(OnCaretPositionChangedSubjectHandlerAsync)} new={e.EventArgs.NewPosition} old={e.EventArgs.OldPosition}");
 
 					var cursorLine = wpfTextView.TextSnapshot.GetLineFromPosition(e.EventArgs.NewPosition.BufferPosition.Position);
-					_ = CodeStreamService.ChangeCaretAsync(virtualTextDocument.Uri, wpfTextView.ToVisibleRangesSafe(), cursorLine.LineNumber, wpfTextView.TextSnapshot.LineCount);
+					await CodeStreamService.ChangeCaretAsync(virtualTextDocument.Uri, wpfTextView.ToVisibleRangesSafe(), cursorLine.LineNumber, wpfTextView.TextSnapshot.LineCount);
 				}
 			}
 			catch (Exception ex) {

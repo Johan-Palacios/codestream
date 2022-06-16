@@ -97,7 +97,7 @@ namespace CodeStream.VisualStudio.UnitTests.UI {
 			Assert.AreEqual(true, propertyCount > 0);
 
 			listener.VsTextViewCreated(textView.Object);
-			listener.OnSessionReadyAsync(wpfTextViewMock.Object);
+			_ = listener.OnSessionReadyAsync(wpfTextViewMock.Object);
 			Assert.AreEqual(true, wpfTextViewMock.Object.Properties.PropertyList.Count > propertyCount);
 
 			((IWpfTextViewConnectionListener)listener).SubjectBuffersDisconnected(wpfTextViewMock.Object, reason, bufferCollection);

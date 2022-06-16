@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Shell.Events;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Composition;
+using CodeStream.VisualStudio.Framework.Extensions;
 
 namespace CodeStream.VisualStudio.Services {
 
@@ -24,7 +25,11 @@ namespace CodeStream.VisualStudio.Services {
 
 		[ImportingConstructor]
 		public SolutionEventsListener([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider) {
-			if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+			if (serviceProvider == null) {
+				throw new ArgumentNullException(nameof(serviceProvider));
+			}
+
+			ThreadHelper.ThrowIfNotOnUIThread();
 			_vsSolution = serviceProvider.GetService(typeof(SVsSolution)) as IVsSolution;
 			Assumes.Present(_vsSolution);
 
@@ -35,7 +40,9 @@ namespace CodeStream.VisualStudio.Services {
 			if (Opened == null)
 				return;
 
+			ThreadHelper.ThrowIfNotOnUIThread();
 			string solutionFile = _vsSolution.GetSolutionFile();
+
 			if (string.IsNullOrEmpty(solutionFile))
 				return;
 
@@ -47,7 +54,9 @@ namespace CodeStream.VisualStudio.Services {
 			if (Opened == null)
 				return;
 
+			ThreadHelper.ThrowIfNotOnUIThread();
 			string solutionFile = _vsSolution.GetSolutionFile();
+
 			if (string.IsNullOrEmpty(solutionFile))
 				return;
 
@@ -205,19 +214,7 @@ namespace CodeStream.VisualStudio.Services {
 
 		public void OnQueryCloseFolder(string folderPath, ref int pfCancel) {
 		}
-
-		public int OnAfterAsynchOpenProject(IVsHierarchy pHierarchy, int fAdded) {
-			return 0;
-		}
-
-		public int OnAfterChangeProjectParent(IVsHierarchy pHierarchy) {
-			return 0;
-		}
-
-		public int OnQueryChangeProjectParent(IVsHierarchy pHierarchy, IVsHierarchy pNewParentHier, ref int pfCancel) {
-			return 0;
-		}
-
+		
 		public void OnAfterCloseFolder(string folderPath) {
 			this.OnFolderClosed();
 		}

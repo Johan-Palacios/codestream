@@ -1,5 +1,5 @@
-﻿using CodeStream.VisualStudio.Core.Extensions;
-using CodeStream.VisualStudio.Core.Logging.Sanitizer;
+﻿using CodeStream.VisualStudio.Core.Logging.Sanitizer;
+using CodeStream.VisualStudio.Framework.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeStream.VisualStudio.UnitTests.Core.Logging.Sanitizer

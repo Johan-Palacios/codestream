@@ -23,7 +23,7 @@ namespace CodeStream.VisualStudio.UnitTests.Core.Models {
 		[DataRow("", false)]
 		[DataRow(null, false)]
 		public void TryParseTest(string filePathPart, bool expected) {
-			Assert.AreEqual(expected, CodeStreamDiffUri.TryParse(filePathPart, out CodeStreamDiffUri result));
+			Assert.AreEqual(expected, CodeStreamDiffUri.TryParse(filePathPart, out _));
 		}
 		
 		[DataRow(@"codestream-diff/reviewId/undefined/repoId/left/codestream-diff/foo/bar/baz1.cs", "foo/bar/baz1.cs", true)]

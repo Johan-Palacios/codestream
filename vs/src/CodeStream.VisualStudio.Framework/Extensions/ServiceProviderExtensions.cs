@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio;
+﻿using System;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using System;
 
-namespace CodeStream.VisualStudio.Services {
+namespace CodeStream.VisualStudio.Framework.Extensions {
 	public static class ServiceProviderExtensions {
 		public static T GetService<T>(this IServiceProvider serviceProvider) where T : class {
 			return serviceProvider.GetService<T>(typeof(T));
@@ -27,13 +27,7 @@ namespace CodeStream.VisualStudio.Services {
 
 			return serviceProvider.GetService(serviceType) as T;
 		}
-
-		public static uint GetCmdUIContextCookie(this IVsMonitorSelection vsMonitorSelection, Guid id) {
-			ThreadHelper.ThrowIfNotOnUIThread();
-			ErrorHandler.ThrowOnFailure(vsMonitorSelection.GetCmdUIContextCookie(ref id, out var cookie));
-			return cookie;
-		}
-
+		
 		public static string GetSolutionFile(this IVsSolution solution) {
 			if (solution == null) throw new ArgumentNullException(nameof(solution));
 
